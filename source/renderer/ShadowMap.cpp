@@ -25,6 +25,7 @@
 #include "lib/bits.h"
 #include "lib/ogl.h"
 #include "ps/CLogger.h"
+#include "ps/ConfigDB.h"
 #include "ps/Profile.h"
 
 #include "graphics/LightEnv.h"
@@ -94,6 +95,9 @@ struct ShadowMapInternals
 	// Helper functions
 	void CalcShadowMatrices();
 	void CreateTexture();
+
+	// Shadow map quality (-2 - Very Low, -1 - Low, 0 - Medium, 1 - High, 2 - Ultra)
+	int QualityLevel;
 };
 
 
@@ -118,6 +122,9 @@ ShadowMap::ShadowMap()
 
 	// Avoid using uninitialised values in AddShadowedBound if SetupFrame wasn't called first
 	m->LightTransform.SetIdentity();
+
+	// Default quality is medium
+	m->QualityLevel = 0;
 }
 
 
@@ -385,8 +392,34 @@ void ShadowMapInternals::CreateTexture()
 	}
 	else
 	{
+		CFG_GET_VAL("shadowquality", QualityLevel);
+		LOGWARNING("SD: %d", QualityLevel);
+
 		// get shadow map size as next power of two up from view width/height
-		Width = Height = (int)round_up_to_pow2((unsigned)std::max(g_Renderer.GetWidth(), g_Renderer.GetHeight()));
+		int shadow_map_size = (int)round_up_to_pow2((unsigned)std::max(g_Renderer.GetWidth(), g_Renderer.GetHeight()));
+		switch (QualityLevel)
+		{
+		// Very Low
+		case -2:
+			shadow_map_size /= 4;
+			break;
+		// Low
+		case -1:
+			shadow_map_size /= 2;
+			break;
+		// High
+		case 1:
+			shadow_map_size *= 2;
+			break;
+		// Ultra
+		case 2:
+			shadow_map_size *= 4;
+			break;
+		// Medium as is
+		default:
+			break;
+		}
+		Width = Height = shadow_map_size;
 	}
 	// Clamp to the maximum texture size
 	Width = std::min(Width, (int)ogl_max_tex_size);

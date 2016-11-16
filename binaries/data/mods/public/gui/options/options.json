@@ -123,7 +123,13 @@
 			"label": "Shadows",
 			"tooltip": "Enable shadows",
 			"parameters": {  "config": "shadows", "renderer": "Shadows" },
-			"dependencies": [ "shadowpcf" ]
+			"dependencies": [ "shadowquality", "shadowpcf" ]
+		},
+		{
+			"type": "dropdown",
+			"label": "Shadow quality",
+			"tooltip": "Shadow quality. REQUIRES GAME RESTART",
+			"parameters": { "list": [ "Very Low", "Low", "Medium", "High", "Very High" ], "config": "shadowquality" }
 		},
 		{
 			"type": "boolean",

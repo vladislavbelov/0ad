@@ -199,6 +199,8 @@ function setupControl(option, i, category)
 				let val = +Engine.ConfigDB_GetValue("user", key);
 				if (key === "materialmgr.quality")
 					val = val > 5 ? 2 : val > 2 ? 1 : 0;
+				if (key === "shadowquality")
+					val = val + 2;
 				control.selected = val;
 				break;
 			case "list":
@@ -219,6 +221,8 @@ function setupControl(option, i, category)
 				let val = this.selected;
 				if (key === "materialmgr.quality")
 					val = val == 0 ? 2 : val == 1 ? 5 : 8;
+				if (key === "shadowquality")
+					val = val - 2;
 				Engine.ConfigDB_CreateValue("user", key, val);
 				Engine.ConfigDB_SetChanges("user", true);
 				updateOptionPanel();
