@@ -127,7 +127,7 @@
 		},
 		{
 			"type": "dropdown",
-			"label": "Shadow quality",
+			"label": "Shadow Quality",
 			"tooltip": "Shadow quality. REQUIRES GAME RESTART",
 			"parameters": { "list": [ "Very Low", "Low", "Medium", "High", "Very High" ], "config": "shadowquality" }
 		},
