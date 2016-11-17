@@ -393,7 +393,6 @@ void ShadowMapInternals::CreateTexture()
 	else
 	{
 		CFG_GET_VAL("shadowquality", QualityLevel);
-		LOGWARNING("SD: %d", QualityLevel);
 
 		// get shadow map size as next power of two up from view width/height
 		int shadow_map_size = (int)round_up_to_pow2((unsigned)std::max(g_Renderer.GetWidth(), g_Renderer.GetHeight()));
